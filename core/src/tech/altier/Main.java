@@ -3,26 +3,26 @@ package tech.altier;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URL;
+import java.net.HttpURLConnection;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.ProtocolException;
 
 public class Main {
-    public static void main(String[] args) {
-
+    public static void main(String[] args) throws JSONException, IOException {
+        System.out.println(chat("Hello, how are you?"));
     }
 
     /**
      * ChatGPT API caller function
      * This method will take a string as input and return a string as output
-     * @param input
      * @return response
      */
     public static String chat(String input) throws IOException, JSONException {
         String URL = "https://api.openai.com/v1/completions";
-        HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
+        HttpURLConnection con = (HttpURLConnection) new URL(URL).openConnection();
 
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/json");
@@ -37,9 +37,11 @@ public class Main {
         con.setDoOutput(true);
         con.getOutputStream().write(data.toString().getBytes());
 
-        String output = new BufferedReader(new InputStreamReader(con.getInputStream())).lines()
-                .reduce((a, b) -> a + b).get();
+        String output = new BufferedReader(new InputStreamReader(con.getInputStream()))
+                .lines()
+                .reduce((a, b) -> a + b)
+                .get();
 
-        System.out.println(new JSONObject(output).getJSONArray("choices").getJSONObject(0).getString("text"));
+        return new JSONObject(output).getJSONArray("choices").getJSONObject(0).getString("text");
     }
 }

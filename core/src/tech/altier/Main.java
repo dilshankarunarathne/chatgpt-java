@@ -1,11 +1,13 @@
 package tech.altier;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
-
-import org.json.JSONObject;
 
 public class Main {
     public static void main(String[] args) {
@@ -18,7 +20,7 @@ public class Main {
      * @param input
      * @return response
      */
-    public static String chat(String input) throws ProtocolException {
+    public static String chat(String input) throws IOException, JSONException {
         String URL = "https://api.openai.com/v1/completions";
         HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
 
@@ -28,7 +30,7 @@ public class Main {
 
         JSONObject data = new JSONObject();
         data.put("model", "text-davinci-003");
-        data.put("prompt", text);
+        data.put("prompt", input);
         data.put("max_tokens", 4000);
         data.put("temperature", 1.0);
 

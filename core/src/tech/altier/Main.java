@@ -9,10 +9,19 @@ import java.net.HttpURLConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Scanner;
 
 public class Main {
+    private static final String API_KEY = "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";
+    private static final Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) throws JSONException, IOException {
-        System.out.println(chat("Hello, how are you?"));
+        while (true) {
+            System.out.print("You: ");
+            String input = scanner.nextLine();
+            if (input.equals("exit")) break;
+            System.out.println("Bot: " + chat(input));
+        }
     }
 
     /**
@@ -26,7 +35,7 @@ public class Main {
 
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/json");
-        con.setRequestProperty("Authorization", "Bearer YOUR-API-KEY");
+        con.setRequestProperty("Authorization", "Bearer " + API_KEY);
 
         JSONObject data = new JSONObject();
         data.put("model", "text-davinci-003");
